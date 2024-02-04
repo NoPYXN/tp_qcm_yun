@@ -45,16 +45,22 @@ fun AccueilScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            EnsembleBoutonAccueil("1", onElementClick = {navController.navigate(Screen.QcmScreen.itineraire)})
-            EnsembleBoutonAccueil("2", onElementClick = {navController.navigate(Screen.QcmScreen.itineraire)})
-            EnsembleBoutonAccueil("3", onElementClick = {navController.navigate(Screen.QcmScreen.itineraire)})
+            EnsembleBoutonAccueil("1", onElementClick = {numero ->
+                navController.navigate(Screen.QcmScreen.itineraire + "/" + numero)
+            })
+            EnsembleBoutonAccueil("2", onElementClick = {numero ->
+                navController.navigate(Screen.QcmScreen.itineraire + "/" + numero)
+            })
+            EnsembleBoutonAccueil("3",  onElementClick = {numero ->
+                navController.navigate(Screen.QcmScreen.itineraire + "/" + numero)
+            })
         }
 
         Text(
             text = "Liste des QCM",
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
-                .padding(8.dp)
+                .padding(40.dp)
                 .align(Alignment.TopCenter)
         )
     }
@@ -97,7 +103,6 @@ fun EnsembleBoutonAccueil(
         }
     }
 }
-
 
 
 @Preview
