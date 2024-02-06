@@ -45,13 +45,13 @@ fun AccueilScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            EnsembleBoutonAccueil("1", onElementClick = {numero ->
+            EnsembleBoutonAccueil("1","QCM sur le bodybuilding", onElementClick = {numero ->
                 navController.navigate(Screen.QcmScreen.itineraire + "/" + numero)
             })
-            EnsembleBoutonAccueil("2", onElementClick = {numero ->
+            EnsembleBoutonAccueil("2","QCM sur la musique", onElementClick = {numero ->
                 navController.navigate(Screen.QcmScreen.itineraire + "/" + numero)
             })
-            EnsembleBoutonAccueil("3",  onElementClick = {numero ->
+            EnsembleBoutonAccueil("3","QCM sur les chaussures",  onElementClick = {numero ->
                 navController.navigate(Screen.QcmScreen.itineraire + "/" + numero)
             })
         }
@@ -70,6 +70,7 @@ fun AccueilScreen(
 @Composable
 fun EnsembleBoutonAccueil(
     numero: String,
+    TextBouton : String,
     onElementClick : (String)->Unit){
     var boutonsVisibles by remember { mutableStateOf(true) }
 
@@ -87,7 +88,7 @@ fun EnsembleBoutonAccueil(
                     .weight(1f)
                     .padding(8.dp)
             ) {
-                Text(text = "QCM numéro $numero")
+                Text(text = "$TextBouton")
             }
         }
 

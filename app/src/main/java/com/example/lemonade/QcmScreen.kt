@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
+import kotlin.properties.Delegates
 
 
 @Composable
@@ -40,6 +41,9 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
     var reponseChoisie by remember { mutableStateOf(0) }
 
     Bouton_Retour_Accueil("3", onElementClick = {navController.navigate(Screen.AccueilScreen.itineraire)})
+    lateinit var valQuestion: String
+    var valHauteurImage by Delegates.notNull<Int>()
+    var valLargeurImage by Delegates.notNull<Int>()
     lateinit var valReponse1: String
     lateinit var valReponse2: String
     lateinit var valReponse3: String
@@ -48,9 +52,11 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
     lateinit var valimage2: String
     lateinit var valimage3: String
     lateinit var valimage4: String
-    lateinit var valQuestion: String
+
 
     if (numero == 1) {
+        valHauteurImage = 84
+        valLargeurImage = 149
         valQuestion = "Qui est actuellement le vainqueur de Mister Olympia (catégorie Classique Physique) depuis 4 ans d'affilé ?"
         valReponse1 = "Chris Bumstead"
         valimage1 = "chrisbumstead"
@@ -62,34 +68,38 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
         valimage4 = "nickolasvenuti"
     }
     if (numero == 2) {
-        valQuestion = "Artiste de rap?"
-        valReponse1 = "Chris Bumstead"
-        valimage1 = "chrisbumstead"
-        valReponse2 = "Réponse 2"
-        valimage2 = "ramonrochaqueiroz"
-        valReponse3 = "Réponse 3"
-        valimage3 = "stephanematala"
-        valReponse4 = "Réponse 4"
-        valimage4 = "nickolasvenuti"
+        valHauteurImage = 120
+        valLargeurImage = 120
+        valQuestion = "Lesquels de ces artistes a la musique la plus écoutée ?"
+        valReponse1 = "XXX Tentacion"
+        valimage1 = "xxxtentacion"
+        valReponse2 = "Scarlxrd"
+        valimage2 = "scarlxrd"
+        valReponse3 = "So la lune"
+        valimage3 = "solalune"
+        valReponse4 = "Laylow"
+        valimage4 = "laylow"
     }
     if (numero == 3) {
+        valHauteurImage = 84
+        valLargeurImage = 149
         valQuestion = " Quel est la paire de chaussure la plus chère parmit les quatres ?"
-        valReponse1 = "Chris Bumstead"
-        valimage1 = "chrisbumstead"
-        valReponse2 = "Réponse 2"
-        valimage2 = "ramonrochaqueiroz"
-        valReponse3 = "Réponse 3"
-        valimage3 = "stephanematala"
-        valReponse4 = "Réponse 4"
-        valimage4 = "nickolasvenuti"
+        valReponse1 = "Air Jordan 1 Retro High Off-White Chicago"
+        valimage1 = "airjordan1chicago"
+        valReponse2 = "Baskets en cuir rhyton Gucci"
+        valimage2 = "basketsrhytongucci"
+        valReponse3 = "Balmain Unicorn"
+        valimage3 = "balmainunicorn"
+        valReponse4 = "Nike SB Dunk Low Travis Scott"
+        valimage4 = "dunklowtravis"
     }
 
 
     val reponses = listOf(
-        Response("$valReponse1","$valimage1" , 1),
-        Response("$valReponse2","$valimage2", 2),
-        Response("$valReponse3","$valimage3", 3),
-        Response("$valReponse4","$valimage4", 4)
+        Response("$valReponse1","$valimage1",valHauteurImage, valLargeurImage, 1),
+        Response("$valReponse2","$valimage2",valHauteurImage, valLargeurImage, 2),
+        Response("$valReponse3","$valimage3",valHauteurImage, valLargeurImage, 3),
+        Response("$valReponse4","$valimage4",valHauteurImage, valLargeurImage, 4)
     ).shuffled()
 
     Column(
@@ -114,12 +124,12 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Response_Button(reponses[0],reponses[0].image) {
+                    Response_Button(reponses[0],reponses[0].image, reponses[0].hauteur , reponses[0].largeur) {
                         reponseChoisie = reponses[0].id
                         boutonsVisibles = false
                     }
                     Spacer(modifier = Modifier.width(16.dp))
-                    Response_Button(reponses[1],reponses[1].image) {
+                    Response_Button(reponses[1],reponses[1].image, reponses[1].hauteur , reponses[1].largeur) {
                         reponseChoisie = reponses[1].id
                         boutonsVisibles = false
                     }
@@ -132,12 +142,12 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Response_Button(reponses[2],reponses[2].image) {
+                    Response_Button(reponses[2],reponses[2].image, reponses[2].hauteur , reponses[2].largeur) {
                         reponseChoisie = reponses[2].id
                         boutonsVisibles = false
                     }
                     Spacer(modifier = Modifier.width(16.dp))
-                    Response_Button(reponses[3],reponses[3].image) {
+                    Response_Button(reponses[3],reponses[3].image, reponses[3].hauteur , reponses[3].largeur) {
                         reponseChoisie = reponses[3].id
                         boutonsVisibles = false
                     }
@@ -158,15 +168,15 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
     }
 }
 
-data class Response(val text: String, val image : String, val id: Int)
+data class Response(val text: String, val image : String, val hauteur : Int, val largeur : Int, val id: Int)
 
 
 @Composable
-fun Response_Button(response: Response, image: String, onClick: () -> Unit) {
+fun Response_Button(response: Response, image: String, hauteur : Int, largeur : Int, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = Modifier
-            .height(250.dp)
+            .height(200.dp)
             .width(175.dp)
             .background(MaterialTheme.colorScheme.primary)
     ) {
@@ -180,8 +190,8 @@ fun Response_Button(response: Response, image: String, onClick: () -> Unit) {
                 painter = painterResource(id = getDrawableResourceId(image)),
                 contentDescription = "image de réponse",
                 modifier = Modifier
-                    .height(150.dp)
-                    .width(150.dp)
+                    .height(hauteur.dp)
+                    .width(largeur.dp)
                     .clip(MaterialTheme.shapes.medium)
                     .background(MaterialTheme.colorScheme.background)
             )
@@ -200,20 +210,6 @@ fun getDrawableResourceId(imageName: String): Int {
         LocalContext.current.packageName
     )
 }
-
-/*
-@Composable
-fun Response_Button(response: Response, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier
-            .height(175.dp)
-            .width(175.dp)
-            .background(MaterialTheme.colorScheme.primary)
-    ) {
-        Text(text = response.text)
-    }
-}*/
 
 @Composable
 fun Bouton_Retour_Accueil(numero : String, onElementClick : (String)->Unit) {
