@@ -57,7 +57,7 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
     if (numero == 1) {
         valHauteurImage = 84
         valLargeurImage = 149
-        valQuestion = "Qui est actuellement le vainqueur de Mister Olympia (catégorie Classique Physique) depuis 4 ans d'affilé ?"
+        valQuestion = "Qui est actuellement le vainqueur de Mister Olympia (catégorie Classique Physique) depuis 4 ans d'affilé ?"
         valReponse1 = "Chris Bumstead"
         valimage1 = "chrisbumstead"
         valReponse2 = "Ramon Rocha Queiroz"
@@ -102,23 +102,25 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
         Response("$valReponse4","$valimage4",valHauteurImage, valLargeurImage, 4)
     ).shuffled()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "$valQuestion",
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(8.dp)
-        )
+
+
 
         Spacer(modifier = Modifier.height(16.dp))
 
         if (boutonsVisibles) {
-            Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "$valQuestion",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(8.dp)
+
+                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -154,18 +156,68 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
                 }
             }
         } else {
-            if (reponseChoisie == 1) {
-                Text("Bonne réponse")
-                BoutonRetourAccueil_MauvaiseReponse("3", onElementClick = {navController.navigate(Screen.AccueilScreen.itineraire)})
-            }
-            if (reponseChoisie != 1) {
-                Text("Mauvaise réponse")
-                BoutonRetour() {
-                    boutonsVisibles = true
+
+                if (reponseChoisie == 1) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "$valQuestion",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(8.dp)
+
+                        )
+                        Text("Bonne réponse")
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.Bottom,
+                        horizontalAlignment = Alignment.CenterHorizontally
+
+                    ) {
+                        BoutonRetourAccueil_MauvaiseReponse(
+                            "3",
+                            onElementClick = { navController.navigate(Screen.AccueilScreen.itineraire) })
+                    }
                 }
-            }
+                if (reponseChoisie != 1) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "$valQuestion",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(8.dp)
+
+                        )
+                        Text("Mauvaise réponse")
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.Bottom,
+                        horizontalAlignment = Alignment.CenterHorizontally
+
+                    ){
+                        BoutonRetour() {
+                            boutonsVisibles = true
+                        }
+                    }
+                }
+
         }
-    }
+
 }
 
 data class Response(val text: String, val image : String, val hauteur : Int, val largeur : Int, val id: Int)
@@ -217,7 +269,6 @@ fun Bouton_Retour_Accueil(numero : String, onElementClick : (String)->Unit) {
         onClick = {onElementClick(numero) },
         modifier = Modifier
             .padding(top = 40.dp)
-            .padding(horizontal = 8.dp)
     ) {
         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Retour à l'accueil")
     }
@@ -227,8 +278,8 @@ fun BoutonRetourAccueil_MauvaiseReponse(numero : String, onElementClick : (Strin
     Button(
         onClick = {onElementClick(numero) },
         modifier = Modifier
-            .padding(8.dp)
             .height(100.dp)
+            .paddingFromBaseline(bottom = 10.dp)
     ) {
         Text(" Retourner à l'accueil")
     }
@@ -240,6 +291,7 @@ fun BoutonRetour(onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier
             .padding(8.dp)
+            .paddingFromBaseline(bottom = 10.dp)
             .background(MaterialTheme.colorScheme.primary)
     ) {
         Text("Retour")
