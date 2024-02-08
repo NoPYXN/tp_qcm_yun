@@ -1,6 +1,7 @@
 // QuestionScreen.kt
 package com.example.lemonade
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,22 +29,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlin.properties.Delegates
 
-
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
-    //,navController: NavController
+
     var boutonsVisibles by remember { mutableStateOf(true) }
     var reponseChoisie by remember { mutableStateOf(0) }
-
-    Bouton_Retour_Accueil("3", onElementClick = {navController.navigate(Screen.AccueilScreen.itineraire)})
+    var showConfetti by remember { mutableStateOf(false) }
+    Bouton_Retour_Accueil_Icon_Fleche("1", onElementClick = {navController.navigate(Screen.AccueilScreen.itineraire)})
     lateinit var valQuestion: String
     var valHauteurImage by Delegates.notNull<Int>()
     var valLargeurImage by Delegates.notNull<Int>()
+
     lateinit var valReponse1: String
     lateinit var valReponse2: String
     lateinit var valReponse3: String
@@ -52,7 +59,6 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
     lateinit var valimage2: String
     lateinit var valimage3: String
     lateinit var valimage4: String
-
 
     if (numero == 1) {
         valHauteurImage = 84
@@ -94,7 +100,6 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
         valimage4 = "dunklowtravis"
     }
 
-
     val reponses = listOf(
         Response("$valReponse1","$valimage1",valHauteurImage, valLargeurImage, 1),
         Response("$valReponse2","$valimage2",valHauteurImage, valLargeurImage, 2),
@@ -102,126 +107,103 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
         Response("$valReponse4","$valimage4",valHauteurImage, valLargeurImage, 4)
     ).shuffled()
 
+    if (boutonsVisibles) {
+        //Affichage de la question
+        Question_Affichage("$valQuestion")
 
-
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        if (boutonsVisibles) {
-            Column(
+        //Affichage des boutons de réponse sous forme de carré
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 30.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = "$valQuestion",
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(8.dp)
-
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
+                Response_Button(
+                    reponses[0],
+                    reponses[0].image,
+                    reponses[0].hauteur,
+                    reponses[0].largeur
                 ) {
-                    Response_Button(reponses[0],reponses[0].image, reponses[0].hauteur , reponses[0].largeur) {
-                        reponseChoisie = reponses[0].id
-                        boutonsVisibles = false
-                    }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Response_Button(reponses[1],reponses[1].image, reponses[1].hauteur , reponses[1].largeur) {
-                        reponseChoisie = reponses[1].id
-                        boutonsVisibles = false
-                    }
+                    reponseChoisie = reponses[0].id
+                    boutonsVisibles = false
                 }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
+                Spacer(modifier = Modifier.width(16.dp))
+                Response_Button(
+                    reponses[1],
+                    reponses[1].image,
+                    reponses[1].hauteur,
+                    reponses[1].largeur
                 ) {
-                    Response_Button(reponses[2],reponses[2].image, reponses[2].hauteur , reponses[2].largeur) {
-                        reponseChoisie = reponses[2].id
-                        boutonsVisibles = false
-                    }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Response_Button(reponses[3],reponses[3].image, reponses[3].hauteur , reponses[3].largeur) {
-                        reponseChoisie = reponses[3].id
-                        boutonsVisibles = false
-                    }
+                    reponseChoisie = reponses[1].id
+                    boutonsVisibles = false
                 }
             }
-        } else {
 
-                if (reponseChoisie == 1) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "$valQuestion",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(8.dp)
+            Spacer(modifier = Modifier.height(16.dp))
 
-                        )
-                        Text("Bonne réponse")
-                    }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Bottom,
-                        horizontalAlignment = Alignment.CenterHorizontally
-
-                    ) {
-                        BoutonRetourAccueil_MauvaiseReponse(
-                            "3",
-                            onElementClick = { navController.navigate(Screen.AccueilScreen.itineraire) })
-                    }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Response_Button(
+                    reponses[2],
+                    reponses[2].image,
+                    reponses[2].hauteur,
+                    reponses[2].largeur
+                ) {
+                    reponseChoisie = reponses[2].id
+                    boutonsVisibles = false
                 }
-                if (reponseChoisie != 1) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "$valQuestion",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(8.dp)
-
-                        )
-                        Text("Mauvaise réponse")
-                    }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.Bottom,
-                        horizontalAlignment = Alignment.CenterHorizontally
-
-                    ){
-                        BoutonRetour() {
-                            boutonsVisibles = true
-                        }
-                    }
+                Spacer(modifier = Modifier.width(16.dp))
+                Response_Button(
+                    reponses[3],
+                    reponses[3].image,
+                    reponses[3].hauteur,
+                    reponses[3].largeur
+                ) {
+                    reponseChoisie = reponses[3].id
+                    boutonsVisibles = false
                 }
+            }
+        }
+    } else {
+        if (reponseChoisie == 1) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .confetti(showConfetti = true)
+            ) {
+                Question_Affichage("$valQuestion")
+
+                Bonne_Reponse_Affichage()
+
+                Bouton_Retour_Accueil_Bonne_Reponse(
+                    "1",
+                    onElementClick = { navController.navigate(Screen.AccueilScreen.itineraire) }
+                )
+            }
 
         }
+        if (reponseChoisie != 1) {
+            Question_Affichage("$valQuestion")
 
+            Mauvaise_Reponse_Affichage()
+
+            Bouton_Retour() {
+                boutonsVisibles = true
+            }
+        }
+    }
 }
 
 data class Response(val text: String, val image : String, val hauteur : Int, val largeur : Int, val id: Int)
-
 
 @Composable
 fun Response_Button(response: Response, image: String, hauteur : Int, largeur : Int, onClick: () -> Unit) {
@@ -239,7 +221,7 @@ fun Response_Button(response: Response, image: String, hauteur : Int, largeur : 
         ) {
             // Image
             Image(
-                painter = painterResource(id = getDrawableResourceId(image)),
+                painter = painterResource(id = Lien_Image(image)),
                 contentDescription = "image de réponse",
                 modifier = Modifier
                     .height(hauteur.dp)
@@ -255,7 +237,7 @@ fun Response_Button(response: Response, image: String, hauteur : Int, largeur : 
 }
 
 @Composable
-fun getDrawableResourceId(imageName: String): Int {
+fun Lien_Image(imageName: String): Int {
     return LocalContext.current.resources.getIdentifier(
         imageName,
         "drawable",
@@ -264,9 +246,9 @@ fun getDrawableResourceId(imageName: String): Int {
 }
 
 @Composable
-fun Bouton_Retour_Accueil(numero : String, onElementClick : (String)->Unit) {
+fun Bouton_Retour_Accueil_Icon_Fleche(numero : String, onElementClick : (String)->Unit) {
     IconButton(
-        onClick = {onElementClick(numero) },
+        onClick = { onElementClick(numero) },
         modifier = Modifier
             .padding(top = 40.dp)
     ) {
@@ -274,26 +256,99 @@ fun Bouton_Retour_Accueil(numero : String, onElementClick : (String)->Unit) {
     }
 }
 @Composable
-fun BoutonRetourAccueil_MauvaiseReponse(numero : String, onElementClick : (String)->Unit) {
-    Button(
-        onClick = {onElementClick(numero) },
+fun Bouton_Retour_Accueil_Bonne_Reponse(numero : String, onElementClick : (String)->Unit) {
+    Column(
         modifier = Modifier
-            .height(100.dp)
-            .paddingFromBaseline(bottom = 10.dp)
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
-        Text(" Retourner à l'accueil")
+        Button(
+            onClick = { onElementClick(numero) },
+            modifier = Modifier
+                .height(50.dp)
+                .width(300.dp)
+                .paddingFromBaseline(bottom = 10.dp)
+        ) {
+            Text(" Retourner à l'accueil")
+        }
     }
 }
 
 @Composable
-fun BoutonRetour(onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
+fun Bouton_Retour(onClick: () -> Unit) {
+    Column(
         modifier = Modifier
-            .padding(8.dp)
-            .paddingFromBaseline(bottom = 10.dp)
-            .background(MaterialTheme.colorScheme.primary)
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        Button(
+            onClick = onClick,
+            modifier = Modifier
+                .height(50.dp)
+                .width(300.dp)
+                .paddingFromBaseline(bottom = 10.dp)
+        ) {
+            Text("Retour")
+        }
+    }
+}
+
+@Composable
+fun Question_Affichage(Question : String){
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 130.dp, start = 8.dp, end = 8.dp),
     ) {
-        Text("Retour")
+        Text(
+            text = Question,
+            style = TextStyle(
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
+fun Bonne_Reponse_Affichage(){
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Bonne Réponse",
+            style = TextStyle(
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            color = Color.Green,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+@Composable
+fun Mauvaise_Reponse_Affichage(){
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Mauvaise Réponse",
+            style = TextStyle(
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            color = Color.Red,
+            textAlign = TextAlign.Center,
+        )
     }
 }
