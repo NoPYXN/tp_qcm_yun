@@ -46,7 +46,7 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
     var boutonsVisibles by remember { mutableStateOf(true) }
     var reponseChoisie by remember { mutableStateOf(0) }
     var showConfetti by remember { mutableStateOf(false) }
-    Bouton_Retour_Accueil_Icon_Fleche("1", onElementClick = {navController.navigate(Screen.AccueilScreen.itineraire)})
+    Bouton_Retour_Accueil_Icon_Fleche("1", onElementClick = {navController.navigate(Screen.Accueil_Screen.itineraire)})
     lateinit var valQuestion: String
     var valHauteurImage by Delegates.notNull<Int>()
     var valLargeurImage by Delegates.notNull<Int>()
@@ -59,52 +59,80 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
     lateinit var valimage2: String
     lateinit var valimage3: String
     lateinit var valimage4: String
+    lateinit var valReponseDescription1: String
+    lateinit var valReponseDescription2: String
+    lateinit var valReponseDescription3: String
+    lateinit var valReponseDescription4: String
 
     if (numero == 1) {
-        valHauteurImage = 84
+        valHauteurImage = 85
         valLargeurImage = 149
-        valQuestion = "Qui est actuellement le vainqueur de Mister Olympia (catégorie Classique Physique) depuis 4 ans d'affilé ?"
+
+        valQuestion = "Qui est actuellement le vainqueur de Mister Olympia (catégorie Classique Physique) depuis 4 ans d'affilée ?"
         valReponse1 = "Chris Bumstead"
         valimage1 = "chrisbumstead"
+        valReponseDescription1 = "Et oui, Chris Bumstead est le champion du monde depuis 4 ans !"
+
         valReponse2 = "Ramon Rocha Queiroz"
         valimage2 = "ramonrochaqueiroz"
+        valReponseDescription2 = "Plus connu sous le nom de Ramon Dino, il est arrivé 2ème à Mister Olympia 2022. Il est le plus grand challenger de Chris Bumstead."
+
         valReponse3 = "Stephane Matala"
         valimage3 = "stephanematala"
+        valReponseDescription3 = "Stéphane Matala est un Français. Il est nouveau dans le domaine et il est bien parti pour devenir un grand champion."
+
         valReponse4 = "Nickolas Venuti"
         valimage4 = "nickolasvenuti"
+        valReponseDescription4 = "Nicholas Venuti est seulement un influenceur mais ne fait pas de grandes compétitions."
     }
     if (numero == 2) {
         valHauteurImage = 120
         valLargeurImage = 120
-        valQuestion = "Lesquels de ces artistes a la musique la plus écoutée ?"
+        valQuestion = "Parmi ces artistes, qui a la musique la plus écoutée ?"
+
         valReponse1 = "XXX Tentacion"
         valimage1 = "xxxtentacion"
+        valReponseDescription1 = "XXXTentacion est largement au-dessus des autres avec son titre \"SAD!\" qui compte plus de 2 milliards 150 millions d'écoutes."
+
         valReponse2 = "Scarlxrd"
         valimage2 = "scarlxrd"
+        valReponseDescription2 = "Scarlxrd n'a pas la musique la plus écoutée des quatre, mais il a quand même réussi à atteindre les 115 millions d'écoutes avec sa chanson \"Heart Attack\"."
+
         valReponse3 = "So la lune"
         valimage3 = "solalune"
+        valReponseDescription3 = "So La Lune a le son le moins écouté des quatre mais fait partie des plus originaux, ce qui divise les avis. Cependant, il a tout de même son titre \"Rodé\" qui a 22 millions d'écoutes."
+
         valReponse4 = "Laylow"
         valimage4 = "laylow"
+        valReponseDescription4 = "Laylow a atteint les 55 millions d'écoutes avec \"SPECIAL\", en featuring avec Nekfeu, ce qui est très honorable pour un Français."
     }
     if (numero == 3) {
         valHauteurImage = 84
         valLargeurImage = 149
-        valQuestion = " Quel est la paire de chaussure la plus chère parmit les quatres ?"
+        valQuestion = "Quelle est la paire de chaussures la plus chère parmi les quatre ?"
+
         valReponse1 = "Air Jordan 1 Retro High Off-White Chicago"
         valimage1 = "airjordan1chicago"
+        valReponseDescription1 = "Et oui, la Air Jordan 1 Chicago est la plus chère des quatre, au prix de 10 600 euros."
+
         valReponse2 = "Baskets en cuir rhyton Gucci"
         valimage2 = "basketsrhytongucci"
+        valReponseDescription2 = "Même si c'est une chaussure Gucci, elle n'est pas si chère que ça car elles sont au prix de 860 euros."
+
         valReponse3 = "Balmain Unicorn"
         valimage3 = "balmainunicorn"
+        valReponseDescription3 = "Les Balmain Unicorn sont celles qui ont l'aspect le plus particulier, mais leur prix n'est pas le plus élevé, avec une valeur de 995 euros."
+
         valReponse4 = "Nike SB Dunk Low Travis Scott"
         valimage4 = "dunklowtravis"
+        valReponseDescription4 = "Les Dunk Low de Travis sont au prix de 2 100 euros et sont les deuxièmes plus chères de cette liste."
     }
 
     val reponses = listOf(
-        Response("$valReponse1","$valimage1",valHauteurImage, valLargeurImage, 1),
-        Response("$valReponse2","$valimage2",valHauteurImage, valLargeurImage, 2),
-        Response("$valReponse3","$valimage3",valHauteurImage, valLargeurImage, 3),
-        Response("$valReponse4","$valimage4",valHauteurImage, valLargeurImage, 4)
+        Response(valReponse1, valimage1, valHauteurImage, valLargeurImage,1),
+        Response(valReponse2, valimage2, valHauteurImage, valLargeurImage,2),
+        Response(valReponse3, valimage3, valHauteurImage, valLargeurImage,3),
+        Response(valReponse4, valimage4, valHauteurImage, valLargeurImage,4)
     ).shuffled()
 
     if (boutonsVisibles) {
@@ -182,19 +210,37 @@ fun QcmScreenContent(numero: Int? = 1, navController: NavController) {
             ) {
                 Question_Affichage("$valQuestion")
 
-                Bonne_Reponse_Affichage()
+                Bonne_Reponse_Affichage("$valReponseDescription1")
 
                 Bouton_Retour_Accueil_Bonne_Reponse(
                     "1",
-                    onElementClick = { navController.navigate(Screen.AccueilScreen.itineraire) }
+                    onElementClick = { navController.navigate(Screen.Accueil_Screen.itineraire) }
                 )
             }
 
         }
-        if (reponseChoisie != 1) {
+        else if (reponseChoisie == 2) {
             Question_Affichage("$valQuestion")
 
-            Mauvaise_Reponse_Affichage()
+            Mauvaise_Reponse_Affichage("$valReponseDescription2")
+
+            Bouton_Retour() {
+                boutonsVisibles = true
+            }
+        }
+        else if (reponseChoisie == 3) {
+            Question_Affichage("$valQuestion")
+
+            Mauvaise_Reponse_Affichage("$valReponseDescription3")
+
+            Bouton_Retour() {
+                boutonsVisibles = true
+            }
+        }
+        else if (reponseChoisie == 4) {
+            Question_Affichage("$valQuestion")
+
+            Mauvaise_Reponse_Affichage("$valReponseDescription4")
 
             Bouton_Retour() {
                 boutonsVisibles = true
@@ -229,8 +275,10 @@ fun Response_Button(response: Response, image: String, hauteur : Int, largeur : 
                     .clip(MaterialTheme.shapes.medium)
                     .background(MaterialTheme.colorScheme.background)
             )
+            Spacer(modifier = Modifier.height(14.dp))
             Text(
-                text = response.text
+                text = response.text,
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -317,9 +365,11 @@ fun Question_Affichage(Question : String){
 }
 
 @Composable
-fun Bonne_Reponse_Affichage(){
+fun Bonne_Reponse_Affichage(ReponseDescription : String){
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(30.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -332,12 +382,16 @@ fun Bonne_Reponse_Affichage(){
             color = Color.Green,
             textAlign = TextAlign.Center,
         )
+        Spacer(modifier = Modifier.height(30.dp))
+        Explication_Resultat_Affichage(ReponseDescription)
     }
 }
 @Composable
-fun Mauvaise_Reponse_Affichage(){
+fun Mauvaise_Reponse_Affichage(ReponseDescription : String){
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(30.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -350,5 +404,16 @@ fun Mauvaise_Reponse_Affichage(){
             color = Color.Red,
             textAlign = TextAlign.Center,
         )
+        Spacer(modifier = Modifier.height(30.dp))
+        Explication_Resultat_Affichage(ReponseDescription)
     }
+}
+
+@Composable
+fun Explication_Resultat_Affichage(ReponseDescription : String) {
+    Text(
+        text = ReponseDescription,
+        textAlign = TextAlign.Center,
+
+    )
 }

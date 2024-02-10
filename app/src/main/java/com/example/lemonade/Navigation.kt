@@ -11,9 +11,9 @@ import androidx.navigation.navArgument
 fun Navigation(){
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Screen.AccueilScreen.itineraire){
-        composable(route = Screen.AccueilScreen.itineraire){
-            AccueilScreen(navController = navController)
+    NavHost(navController = navController, startDestination = Screen.Accueil_Screen.itineraire){
+        composable(route = Screen.Accueil_Screen.itineraire){
+            Accueil_Screen(navController = navController)
         }
         composable(
             route = Screen.QcmScreen.itineraire + "/{numero}",
